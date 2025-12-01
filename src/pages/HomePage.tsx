@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import HeroSection from '../components/HeroSection';
 import MovieSlider from '../components/MovieSlider';
 import SkeletonCard from '../components/SkeletonCard';
-import AdvancedFilterBar from '../components/AdvancedFilterBar';
 import { getHomeData, getMoviesByCategory } from '../services/api';
 import type { Movie } from '../types/movie';
 
