@@ -1,6 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useMemo, useState, useRef } from 'react';
 import { FiSearch, FiMenu, FiX, FiChevronDown, FiHeart, FiClock } from 'react-icons/fi';
+import logoImage from '../assets/logo (4).png';
+import besideLogoGif from '../assets/besidelogo.gif';
+import searchGif from '../assets/search.gif';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getCategories, getCountries, getYears, searchMovies } from '../services/api';
 import type { FilterItem, YearItem, Movie } from '../types/movie';
@@ -15,6 +18,7 @@ const Navbar = () => {
   const [countryItems, setCountryItems] = useState<FilterItem[]>([]);
   const [yearItems, setYearItems] = useState<YearItem[]>([]);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
   const navigate = useNavigate();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const searchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -133,11 +137,9 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <span className="text-primary text-3xl font-bold">🎬</span>
-            <span className="text-2xl font-bold text-white">
-              My<span className="text-primary">Movie</span>
-            </span>
+          <Link to="/" className="flex items-center space-x-3">
+            <img src={logoImage} alt="Logo" className="h-14 w-auto" />
+            <img src={besideLogoGif} alt="Beside Logo" className="h-12 w-auto" />
           </Link>
 
           {/* Desktop Menu */}
@@ -218,14 +220,21 @@ const Navbar = () => {
           </div>
 
           {/* Search Bar */}
-          <form onSubmit={handleSearch} className="hidden md:flex items-center relative">
+          <form onSubmit={handleSearch} className="hidden md:flex items-center relative gap-3">
+            {isSearchFocused && (
+              <img src={searchGif} alt="Search" className="h-10 w-auto" />
+            )}
             <div className="relative">
               <input
                 type="text"
                 placeholder="Tìm kiếm phim..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                onFocus={() => searchResults.length > 0 && setShowSearchDropdown(true)}
+                onFocus={() => {
+                  setIsSearchFocused(true);
+                  searchResults.length > 0 && setShowSearchDropdown(true);
+                }}
+                onBlur={() => setIsSearchFocused(false)}
                 className="bg-dark-lighter text-white pl-4 pr-10 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-primary w-64 transition-all duration-300"
               />
               <button

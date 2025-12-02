@@ -5,6 +5,7 @@ import { searchMovies } from '../services/api';
 import type { Movie } from '../types/movie';
 import MovieCard from '../components/MovieCard';
 import SkeletonCard from '../components/SkeletonCard';
+import batLucGif from '../assets/batluccute.gif';
 
 const SearchPage = () => {
   const [searchParams] = useSearchParams();
@@ -69,6 +70,7 @@ const SearchPage = () => {
             </div>
           ) : query ? (
             <div className="text-center py-20">
+              <img src={batLucGif} alt="Không tìm thấy" className="h-32 w-auto mx-auto mb-4" />
               <p className="text-gray-400 text-lg mb-4">
                 Không tìm thấy kết quả nào cho "{query}"
               </p>

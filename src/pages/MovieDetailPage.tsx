@@ -10,6 +10,7 @@ import type {
 } from '../types/movie';
 import { FiPlay, FiClock, FiCalendar, FiStar, FiHeart } from 'react-icons/fi';
 import { useFavorites } from '../hooks/useFavorites';
+import batLucGif from '../assets/batluccute.gif';
 
 const MovieDetailPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -90,6 +91,7 @@ const MovieDetailPage = () => {
     return (
       <div className="min-h-screen bg-dark pt-20 flex items-center justify-center">
         <div className="text-center">
+          <img src={batLucGif} alt="Không tìm thấy" className="h-32 w-auto mx-auto mb-4" />
           <h2 className="text-2xl text-white mb-4">Không tìm thấy phim</h2>
           <Link to="/" className="text-primary hover:underline">
             Quay về trang chủ
@@ -180,12 +182,13 @@ const MovieDetailPage = () => {
               {/* Categories */}
               <div className="flex flex-wrap justify-center md:justify-start gap-2">
                 {movie.category?.map((cat) => (
-                  <span
+                  <Link
                     key={cat.id}
+                    to={`/the-loai/${cat.slug}`}
                     className="border border-white/30 px-2.5 py-1 rounded-full text-xs sm:text-sm text-white hover:border-primary hover:text-primary transition-colors cursor-pointer whitespace-nowrap"
                   >
                     {cat.name}
-                  </span>
+                  </Link>
                 ))}
               </div>
 

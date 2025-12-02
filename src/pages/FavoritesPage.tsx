@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { FiHeart, FiTrash2 } from 'react-icons/fi';
 import { useFavorites } from '../hooks/useFavorites';
 import MovieCard from '../components/MovieCard';
+import yeuthichGif from '../assets/yeuthichcute.gif';
 
 const FavoritesPage = () => {
   const { favorites, removeFavorite } = useFavorites();
@@ -16,7 +17,7 @@ const FavoritesPage = () => {
           transition={{ duration: 0.5 }}
         >
           <div className="flex items-center gap-3 mb-8">
-            <FiHeart className="text-primary text-3xl" />
+            <img src={yeuthichGif} alt="Yêu thích" className="h-12 w-auto" />
             <h1 className="text-3xl md:text-4xl font-bold text-white">
               Phim Yêu Thích
             </h1>

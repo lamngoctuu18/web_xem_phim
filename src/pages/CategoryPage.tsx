@@ -10,6 +10,7 @@ import {
 import type { Movie, PaginatedResponse } from '../types/movie';
 import MovieCard from '../components/MovieCard';
 import SkeletonCard from '../components/SkeletonCard';
+import batLucGif from '../assets/batluccute.gif';
 
 const CategoryPage = () => {
   const { category } = useParams<{ category: string }>();
@@ -88,49 +89,60 @@ const CategoryPage = () => {
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
-                {movies.map((movie) => (
-                  <MovieCard key={movie._id} movie={movie} />
-                ))}
-              </div>
-
-              {/* Pagination */}
-              {totalPages > 1 && (
-                <div className="flex justify-center gap-2">
-                  <button
-                    onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
-                    disabled={currentPage === 1}
-                    className="px-4 py-2 bg-dark-lighter text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary transition-colors"
-                  >
-                    Trước
-                  </button>
-                  
-                  <div className="flex items-center gap-2">
-                    {[...Array(Math.min(5, totalPages))].map((_, i) => {
-                      const page = i + 1;
-                      return (
-                        <button
-                          key={page}
-                          onClick={() => setCurrentPage(page)}
-                          className={`px-4 py-2 rounded-lg transition-colors ${
-                            currentPage === page
-                              ? 'bg-primary text-white'
-                              : 'bg-dark-lighter text-white hover:bg-dark-light'
-                          }`}
-                        >
-                          {page}
-                        </button>
-                      );
-                    })}
+              {movies.length > 0 ? (
+                <>
+                  <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
+                    {movies.map((movie) => (
+                      <MovieCard key={movie._id} movie={movie} />
+                    ))}
                   </div>
 
-                  <button
-                    onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
-                    disabled={currentPage === totalPages}
-                    className="px-4 py-2 bg-dark-lighter text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary transition-colors"
-                  >
-                    Sau
-                  </button>
+                  {/* Pagination */}
+                  {totalPages > 1 && (
+                    <div className="flex justify-center gap-2">
+                      <button
+                        onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                        disabled={currentPage === 1}
+                        className="px-4 py-2 bg-dark-lighter text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary transition-colors"
+                      >
+                        Trước
+                      </button>
+                      
+                      <div className="flex items-center gap-2">
+                        {[...Array(Math.min(5, totalPages))].map((_, i) => {
+                          const page = i + 1;
+                          return (
+                            <button
+                              key={page}
+                              onClick={() => setCurrentPage(page)}
+                              className={`px-4 py-2 rounded-lg transition-colors ${
+                                currentPage === page
+                                  ? 'bg-primary text-white'
+                                  : 'bg-dark-lighter text-white hover:bg-dark-light'
+                              }`}
+                            >
+                              {page}
+                            </button>
+                          );
+                        })}
+                      </div>
+
+                      <button
+                        onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+                        disabled={currentPage === totalPages}
+                        className="px-4 py-2 bg-dark-lighter text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary transition-colors"
+                      >
+                        Sau
+                      </button>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div className="text-center py-20">
+                  <img src={batLucGif} alt="Không tìm thấy" className="h-32 w-auto mx-auto mb-4" />
+                  <p className="text-gray-400 text-lg">
+                    Không tìm thấy phim nào trong danh mục này
+                  </p>
                 </div>
               )}
             </>
