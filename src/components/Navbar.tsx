@@ -1,8 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useMemo, useState, useRef } from 'react';
 import { FiSearch, FiMenu, FiX, FiChevronDown, FiHeart, FiClock } from 'react-icons/fi';
-import logoImage from '../assets/logo (4).png';
-import besideLogoGif from '../assets/besidelogo.gif';
 import searchGif from '../assets/search.gif';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getCategories, getCountries, getYears, searchMovies } from '../services/api';
@@ -138,8 +136,10 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3">
-            <img src={logoImage} alt="Logo" className="h-14 w-auto" />
-            <img src={besideLogoGif} alt="Beside Logo" className="h-12 w-auto" />
+            <span className="text-primary text-3xl font-bold">🎬</span>
+            <span className="text-3xl font-bold text-white">
+              My<span className="text-primary">Movie</span>
+            </span>
           </Link>
 
           {/* Desktop Menu */}
@@ -200,8 +200,8 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Favorite and History Icons */}
-          <div className="hidden md:flex items-center gap-4">
+          {/* Favorite, History, and Search */}
+          <div className="hidden md:flex items-center gap-2">
             <Link
               to="/yeu-thich"
               className="text-gray-300 hover:text-primary transition-colors duration-300"
@@ -217,78 +217,77 @@ const Navbar = () => {
             >
               <FiClock size={22} />
             </Link>
-          </div>
 
-          {/* Search Bar */}
-          <form onSubmit={handleSearch} className="hidden md:flex items-center relative gap-3">
-            {isSearchFocused && (
-              <img src={searchGif} alt="Search" className="h-10 w-auto" />
-            )}
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Tìm kiếm phim..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onFocus={() => {
-                  setIsSearchFocused(true);
-                  searchResults.length > 0 && setShowSearchDropdown(true);
-                }}
-                onBlur={() => setIsSearchFocused(false)}
-                className="bg-dark-lighter text-white pl-4 pr-10 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-primary w-64 transition-all duration-300"
-              />
-              <button
-                type="submit"
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition-colors"
-              >
-                <FiSearch size={20} />
-              </button>
-
-              {/* Search Dropdown */}
-              <AnimatePresence>
-                {showSearchDropdown && searchResults.length > 0 && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute top-full left-0 right-0 mt-2 bg-dark-lighter/95 backdrop-blur-md border border-white/10 rounded-xl shadow-2xl overflow-hidden z-50"
-                  >
-                    {searchResults.map((movie) => (
-                      <button
-                        key={movie._id}
-                        onClick={() => handleSearchResultClick(movie.slug)}
-                        className="w-full flex items-center gap-3 p-3 hover:bg-white/10 transition-colors text-left"
-                      >
-                        <img
-                          src={`https://img.ophim.live/uploads/movies/${movie.thumb_url}`}
-                          alt={movie.name}
-                          className="w-12 h-16 object-cover rounded"
-                        />
-                        <div className="flex-1 min-w-0">
-                          <p className="text-white font-semibold text-sm truncate">{movie.name}</p>
-                          <p className="text-gray-400 text-xs">{movie.year} • {movie.quality}</p>
-                        </div>
-                      </button>
-                    ))}
-                    <button
-                      onClick={handleSearch}
-                      className="w-full p-3 text-primary hover:bg-white/10 transition-colors text-sm font-semibold border-t border-white/10"
-                    >
-                      Xem tất cả kết quả →
-                    </button>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              {/* Loading indicator */}
-              {isSearching && (
-                <div className="absolute right-10 top-1/2 -translate-y-1/2">
-                  <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-                </div>
+            <form onSubmit={handleSearch} className="flex items-center relative gap-2">
+              {isSearchFocused && (
+                <img src={searchGif} alt="Search" className="h-10 w-auto" />
               )}
-            </div>
-          </form>
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Tìm kiếm phim..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onFocus={() => {
+                    setIsSearchFocused(true);
+                    searchResults.length > 0 && setShowSearchDropdown(true);
+                  }}
+                  onBlur={() => setIsSearchFocused(false)}
+                  className="bg-dark-lighter text-white pl-4 pr-10 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-primary w-64 transition-all duration-300"
+                />
+                <button
+                  type="submit"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition-colors"
+                >
+                  <FiSearch size={20} />
+                </button>
+
+                {/* Search Dropdown */}
+                <AnimatePresence>
+                  {showSearchDropdown && searchResults.length > 0 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute top-full left-0 right-0 mt-2 bg-dark-lighter/95 backdrop-blur-md border border-white/10 rounded-xl shadow-2xl overflow-hidden z-50"
+                    >
+                      {searchResults.map((movie) => (
+                        <button
+                          key={movie._id}
+                          onClick={() => handleSearchResultClick(movie.slug)}
+                          className="w-full flex items-center gap-3 p-3 hover:bg-white/10 transition-colors text-left"
+                        >
+                          <img
+                            src={`https://img.ophim.live/uploads/movies/${movie.thumb_url}`}
+                            alt={movie.name}
+                            className="w-12 h-16 object-cover rounded"
+                          />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-white font-semibold text-sm truncate">{movie.name}</p>
+                            <p className="text-gray-400 text-xs">{movie.year} • {movie.quality}</p>
+                          </div>
+                        </button>
+                      ))}
+                      <button
+                        onClick={handleSearch}
+                        className="w-full p-3 text-primary hover:bg-white/10 transition-colors text-sm font-semibold border-t border-white/10"
+                      >
+                        Xem tất cả kết quả →
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Loading indicator */}
+                {isSearching && (
+                  <div className="absolute right-10 top-1/2 -translate-y-1/2">
+                    <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                  </div>
+                )}
+              </div>
+            </form>
+          </div>
 
           {/* Mobile Menu Button */}
           <button
