@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { getMovieDetail } from '../services/api';
 import type { MovieDetail } from '../types/movie';
-import { FiChevronLeft, FiChevronRight, FiSkipBack, FiSkipForward } from 'react-icons/fi';
+import { FiSkipBack, FiSkipForward } from 'react-icons/fi';
 import Hls from 'hls.js';
 import { useWatchHistory } from '../hooks/useWatchHistory';
 
@@ -257,27 +257,7 @@ const WatchPage = () => {
                 </div>
               )}
 
-              {/* Navigation Buttons */}
-              <div className="flex gap-4">
-                {prevEpisode && (
-                  <Link
-                    to={`/xem-phim/${movie.slug}/${prevEpisode.slug}`}
-                    className="flex items-center gap-2 bg-dark-light hover:bg-dark text-white font-semibold px-6 py-3 rounded-lg transition-colors"
-                  >
-                    <FiChevronLeft size={20} />
-                    Tập trước
-                  </Link>
-                )}
-                {nextEpisode && (
-                  <Link
-                    to={`/xem-phim/${movie.slug}/${nextEpisode.slug}`}
-                    className="flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-semibold px-6 py-3 rounded-lg transition-colors ml-auto"
-                  >
-                    Tập tiếp theo
-                    <FiChevronRight size={20} />
-                  </Link>
-                )}
-              </div>
+
             </div>
 
             {/* Episodes List */}
