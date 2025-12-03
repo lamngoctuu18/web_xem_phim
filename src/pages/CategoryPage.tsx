@@ -20,6 +20,7 @@ const CategoryPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [pageTitle, setPageTitle] = useState('Danh Sách Phim');
+  const [pageInput, setPageInput] = useState('');
 
   const baseSegment = useMemo(() => {
     const segments = location.pathname.split('/').filter(Boolean);
@@ -28,6 +29,7 @@ const CategoryPage = () => {
 
   useEffect(() => {
     setCurrentPage(1);
+    setPageInput('');
   }, [category, baseSegment]);
 
   useEffect(() => {
@@ -69,6 +71,59 @@ const CategoryPage = () => {
     window.scrollTo(0, 0);
   }, [category, currentPage]);
 
+  const displayedPages = useMemo(() => {
+    if (totalPages <= 7) {
+      return Array.from({ length: totalPages }, (_, idx) => idx + 1);
+    }
+
+    const pages: Array<number | string> = [1];
+
+    if (currentPage > 4) {
+      pages.push('start-ellipsis');
+    }
+
+    const start = Math.max(2, currentPage - 1);
+    const end = Math.min(totalPages - 1, currentPage + 1);
+
+    for (let page = start; page <= end; page += 1) {
+      pages.push(page);
+    }
+
+    if (currentPage < totalPages - 3) {
+      pages.push('end-ellipsis');
+    }
+
+    pages.push(totalPages);
+
+    return pages;
+  }, [currentPage, totalPages]);
+
+  const handleJumpSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!pageInput) {
+      return;
+    }
+    const parsed = Number(pageInput);
+    if (!Number.isFinite(parsed)) {
+      return;
+    }
+    const clamped = Math.min(Math.max(1, Math.floor(parsed)), totalPages);
+    setCurrentPage(clamped);
+    setPageInput('');
+  };
+
+  const isJumpDisabled = () => {
+    if (!pageInput) {
+      return true;
+    }
+    const parsed = Number(pageInput);
+    if (!Number.isFinite(parsed)) {
+      return true;
+    }
+    const normalized = Math.floor(parsed);
+    return normalized === currentPage || normalized < 1 || normalized > totalPages;
+  };
+
   return (
     <div className="min-h-screen bg-dark pt-24 pb-12">
       <div className="container mx-auto px-4">
@@ -89,7 +144,7 @@ const CategoryPage = () => {
             </div>
           ) : (
             <>
-              {movies.length > 0 ? (
+              {movies.length > 0 && (
                 <>
                   <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
                     {movies.map((movie) => (
@@ -99,41 +154,76 @@ const CategoryPage = () => {
 
                   {/* Pagination */}
                   {totalPages > 1 && (
-                    <div className="flex justify-center gap-2">
-                      <button
-                        onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
-                        disabled={currentPage === 1}
-                        className="px-4 py-2 bg-dark-lighter text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary transition-colors"
-                      >
-                        Trước
-                      </button>
-                      
-                      <div className="flex items-center gap-2">
-                        {[...Array(Math.min(5, totalPages))].map((_, i) => {
-                          const page = i + 1;
+                    <div className="flex flex-col items-center gap-4">
+                      <div className="flex flex-wrap justify-center gap-2">
+                        <button
+                          onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                          disabled={currentPage === 1}
+                          className="px-4 py-2 bg-dark-lighter text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary transition-colors"
+                        >
+                          Trước
+                        </button>
+
+                        {displayedPages.map((item) => {
+                          if (typeof item === 'number') {
+                            return (
+                              <button
+                                key={`page-${item}`}
+                                onClick={() => setCurrentPage(item)}
+                                className={`px-4 py-2 rounded-lg transition-colors ${
+                                  currentPage === item
+                                    ? 'bg-primary text-white'
+                                    : 'bg-dark-lighter text-white hover:bg-dark-light'
+                                }`}
+                              >
+                                {item}
+                              </button>
+                            );
+                          }
                           return (
-                            <button
-                              key={page}
-                              onClick={() => setCurrentPage(page)}
-                              className={`px-4 py-2 rounded-lg transition-colors ${
-                                currentPage === page
-                                  ? 'bg-primary text-white'
-                                  : 'bg-dark-lighter text-white hover:bg-dark-light'
-                              }`}
+                            <span
+                              key={String(item)}
+                              className="px-3 py-2 text-gray-400 select-none"
                             >
-                              {page}
-                            </button>
+                              ...
+                            </span>
                           );
                         })}
+
+                        <button
+                          onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+                          disabled={currentPage === totalPages}
+                          className="px-4 py-2 bg-dark-lighter text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary transition-colors"
+                        >
+                          Sau
+                        </button>
                       </div>
 
-                      <button
-                        onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
-                        disabled={currentPage === totalPages}
-                        className="px-4 py-2 bg-dark-lighter text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary transition-colors"
+                      <form
+                        onSubmit={handleJumpSubmit}
+                        className="flex flex-wrap items-center justify-center gap-2 text-sm text-gray-300"
                       >
-                        Sau
-                      </button>
+                        <span>Đi đến trang:</span>
+                        <input
+                          type="text"
+                          inputMode="numeric"
+                          pattern="[0-9]*"
+                          value={pageInput}
+                          onChange={(e) => setPageInput(e.target.value.replace(/[^0-9]/g, ''))}
+                          className="w-20 bg-dark-lighter border border-white/10 text-white rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                          placeholder="VD: 10"
+                        />
+                        <button
+                          type="submit"
+                          disabled={isJumpDisabled()}
+                          className="px-4 py-2 bg-primary text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary-dark transition-colors"
+                        >
+                          Đi
+                        </button>
+                        <span className="text-xs text-gray-500">
+                          Tổng: {totalPages}
+                        </span>
+                      </form>
                     </div>
                   )}
                 </>
