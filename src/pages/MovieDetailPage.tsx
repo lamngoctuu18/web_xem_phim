@@ -118,7 +118,7 @@ const MovieDetailPage = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-dark via-dark/50 to-transparent" />
         </div>
 
-        <div className="relative h-full container mx-auto px-4 lg:px-6 xl:px-8 flex items-end pb-12">
+        <div className="relative h-full container mx-auto px-4 flex items-end pb-12">
           <div className="flex flex-col md:flex-row gap-6 md:gap-8 w-full">
             {/* Poster */}
             <motion.div
@@ -147,7 +147,7 @@ const MovieDetailPage = () => {
               <p className="text-base sm:text-lg md:text-xl text-gray-300 break-words">{movie.origin_name}</p>
 
               {/* Meta Info */}
-              <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 md:gap-4 lg:gap-5 text-sm lg:text-base">
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 md:gap-4 text-sm">
                 <div className="flex items-center gap-2 whitespace-nowrap">
                   <FiCalendar className="text-primary" />
                   <span className="text-white">{movie.year}</span>
@@ -167,7 +167,7 @@ const MovieDetailPage = () => {
               </div>
 
               {/* Badges */}
-              <div className="flex flex-wrap justify-center md:justify-start gap-2 lg:gap-3">
+              <div className="flex flex-wrap justify-center md:justify-start gap-2">
                 <span className="bg-primary px-3 py-1 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap">
                   {movie.quality}
                 </span>
@@ -180,7 +180,7 @@ const MovieDetailPage = () => {
               </div>
 
               {/* Categories */}
-              <div className="flex flex-wrap justify-center md:justify-start gap-2 lg:gap-3">
+              <div className="flex flex-wrap justify-center md:justify-start gap-2">
                 {movie.category?.map((cat) => (
                   <Link
                     key={cat.id}
@@ -194,7 +194,7 @@ const MovieDetailPage = () => {
 
               {/* Watch Button */}
               {firstEpisode && (
-                <div className="flex flex-col sm:flex-row gap-3 lg:gap-4 justify-center md:justify-start">
+                <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
                   <Link
                     to={`/xem-phim/${movie.slug}/${firstEpisode.slug}`}
                     className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-red-400 hover:from-primary-dark hover:to-red-500 text-white font-bold px-6 sm:px-8 py-3 rounded-lg transition-all duration-300 hover:scale-105 whitespace-nowrap text-sm sm:text-base"
@@ -221,7 +221,7 @@ const MovieDetailPage = () => {
       </div>
 
       {/* Content Section */}
-      <div className="container mx-auto px-4 lg:px-6 xl:px-8 py-12">
+      <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">

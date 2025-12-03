@@ -132,7 +132,7 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-dark/95 backdrop-blur-md border-b border-white/10" ref={dropdownRef}>
-      <div className="container mx-auto px-4 lg:px-6 xl:px-8">
+      <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3">
@@ -143,7 +143,7 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-4 lg:space-x-6 xl:space-x-8">
+          <div className="hidden md:flex items-center space-x-6">
             {menuItems.map((item) => (
               <Link
                 key={item.path}
@@ -201,7 +201,7 @@ const Navbar = () => {
           </div>
 
           {/* Favorite, History, and Search */}
-          <div className="hidden md:flex items-center gap-3 lg:gap-4">
+          <div className="hidden md:flex items-center gap-2">
             <Link
               to="/yeu-thich"
               className="text-gray-300 hover:text-primary transition-colors duration-300"
@@ -233,7 +233,7 @@ const Navbar = () => {
                     searchResults.length > 0 && setShowSearchDropdown(true);
                   }}
                   onBlur={() => setIsSearchFocused(false)}
-                  className="bg-dark-lighter text-white pl-4 pr-10 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-primary w-48 lg:w-56 xl:w-64 transition-all duration-300"
+                  className="bg-dark-lighter text-white pl-4 pr-10 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-primary w-64 transition-all duration-300"
                 />
                 <button
                   type="submit"

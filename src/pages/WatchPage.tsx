@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { getMovieDetail } from '../services/api';
 import type { MovieDetail } from '../types/movie';
-import { FiSkipBack, FiSkipForward } from 'react-icons/fi';
+import { FiChevronLeft, FiChevronRight, FiSkipBack, FiSkipForward } from 'react-icons/fi';
 import Hls from 'hls.js';
 import { useWatchHistory } from '../hooks/useWatchHistory';
 
@@ -174,20 +174,20 @@ const WatchPage = () => {
                       Trình duyệt của bạn không hỗ trợ video.
                     </video>
                     {/* Skip Controls */}
-                    <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex items-center gap-4 opacity-0 hover:opacity-100 transition-opacity z-10">
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-32 opacity-0 hover:opacity-100 transition-opacity z-10 pointer-events-none">
                       <button
                         onClick={handleSkipBackward}
-                        className="bg-dark/80 hover:bg-primary backdrop-blur-md text-white p-3 rounded-full border border-white/10 transition-all duration-300 hover:scale-110"
+                        className="bg-dark/50 hover:bg-primary/80 backdrop-blur-sm text-white p-2 rounded-full border border-white/20 transition-all duration-300 hover:scale-110 pointer-events-auto"
                         aria-label="Tua lùi 10 giây"
                       >
-                        <FiSkipBack size={24} />
+                        <FiSkipBack size={20} />
                       </button>
                       <button
                         onClick={handleSkipForward}
-                        className="bg-dark/80 hover:bg-primary backdrop-blur-md text-white p-3 rounded-full border border-white/10 transition-all duration-300 hover:scale-110"
+                        className="bg-dark/50 hover:bg-primary/80 backdrop-blur-sm text-white p-2 rounded-full border border-white/20 transition-all duration-300 hover:scale-110 pointer-events-auto"
                         aria-label="Tua tiến 10 giây"
                       >
-                        <FiSkipForward size={24} />
+                        <FiSkipForward size={20} />
                       </button>
                     </div>
                     {qualitySelectorOptions.length > 0 && (
@@ -257,7 +257,27 @@ const WatchPage = () => {
                 </div>
               )}
 
-
+              {/* Navigation Buttons */}
+              <div className="flex gap-4">
+                {prevEpisode && (
+                  <Link
+                    to={`/xem-phim/${movie.slug}/${prevEpisode.slug}`}
+                    className="flex items-center gap-2 bg-dark-light hover:bg-dark text-white font-semibold px-6 py-3 rounded-lg transition-colors"
+                  >
+                    <FiChevronLeft size={20} />
+                    Tập trước
+                  </Link>
+                )}
+                {nextEpisode && (
+                  <Link
+                    to={`/xem-phim/${movie.slug}/${nextEpisode.slug}`}
+                    className="flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-semibold px-6 py-3 rounded-lg transition-colors ml-auto"
+                  >
+                    Tập tiếp theo
+                    <FiChevronRight size={20} />
+                  </Link>
+                )}
+              </div>
             </div>
 
             {/* Episodes List */}
